@@ -1,26 +1,26 @@
-# **ForesightFin Member Reports API Documentation**
+---
 
-Welcome to the **ForesightFin Member Reports API** documentation. This API provides endpoints for retrieving member-related financial data such as active loans, investments, loan details, and member profiles. This document will help you integrate and utilize these endpoints effectively.
+### ForesightFin Member Reports API Documentation
+
+Welcome to the **ForesightFin Member Reports API** documentation. This API provides endpoints for retrieving member-related financial data such as active loans, investments, loan details, and member profiles. Below you will find comprehensive information to help you integrate and utilize these endpoints effectively.
+
+## Table of Contents
+
+1. [Base URL](#base-url)
+2. [Authentication](#authentication)
+3. [Endpoints](#endpoints)
+    - [1. Get Active Loans](#1-get-active-loans)
+    - [2. Get Investments](#2-get-investments)
+    - [3. Get Loan Details](#3-get-loan-details)
+    - [4. Get Member Profile](#4-get-member-profile)
+4. [Error Handling](#error-handling)
+5. [Testing](#testing)
+6. [Examples](#examples)
+7. [Contact & Support](#contact--support)
 
 ---
 
-## **Table of Contents**
-
-1. **Base URL**
-2. **Authentication**
-3. **Endpoints**
-    - 3.1 **Get Active Loans**
-    - 3.2 **Get Investments**
-    - 3.3 **Get Loan Details**
-    - 3.4 **Get Member Profile**
-4. **Error Handling**
-5. **Testing**
-6. **Examples**
-7. **Contact & Support**
-
----
-
-## **1. Base URL**
+## Base URL
 
 All API endpoints are accessible under the following base URL:
 
@@ -30,20 +30,21 @@ https://api.foresightfin.app/
 
 ---
 
-## **2. Authentication**
+## Authentication
 
-*Note: The provided code snippets do not include authentication mechanisms. It is recommended to implement secure authentication (e.g., OAuth 2.0, API keys) to protect your endpoints.*
+*Note: The provided code snippets do not include authentication mechanisms. It's recommended to implement secure authentication (e.g., OAuth 2.0, API keys) to protect your endpoints.*
 
 ---
 
-## **3. Endpoints**
+## Endpoints
 
-### **3.1 Get Active Loans**
+### 1. Get Active Loans
 
-- **Description:** Retrieve a list of active loan IDs for a specific member and station.
+Retrieve a list of active loan IDs for a specific member and station.
+
 - **URL:** `/active-loans`
 - **Method:** `GET`
-- **URL Parameters:**
+- **URL Params:**
     - `memberNumber` (string, required): The unique identifier for the member.
     - `stationId` (string, required): The identifier for the station.
 - **Success Response:**
@@ -59,33 +60,42 @@ https://api.foresightfin.app/
 - **Error Responses:**
     - **Code:** `500 Internal Server Error`
     - **Content:** No content.
-- **Example Request:**
 
-```
-GET https://api.foresightfin.app/active-loans?memberNumber=MEM123&stationId=STN456
-```
+- **Example Request:**
+    ```
+    GET https://api.foresightfin.app/active-loans?memberNumber=MEM123&stationId=STN456
+    ```
 
 - **Example Response:**
-
-```json
-[
-    101,
-    102,
-    103
-]
-```
+    ```json
+    [
+        101,
+        102,
+        103
+    ]
+    ```
 
 ---
 
-### **3.2 Get Investments**
+### 2. Get Investments
 
-- **Description:** Retrieve a list of investments for a specific member, station, and investment code.
+Retrieve a list of investments for a specific member, station, and investment code.
+
 - **URL:** `/investments`
 - **Method:** `GET`
-- **URL Parameters:**
+- **URL Params:**
     - `memberNumber` (string, required): The unique identifier for the member.
     - `stationId` (string, required): The identifier for the station.
-    - `investmentCode` (integer, required): The code representing the type of investment.
+    - `investmentCode` (integer, required): The code representing the type of investment. Must be one of the following:
+
+      | Enum Value           | Code |
+      |----------------------|------|
+      | DEPOSITS             | 96   |
+      | SIGHT_DEPOSITS       | 92   |
+      | SAVINGS              | 98   |
+      | SHARES               | 97   |
+      | ADDITIONAL_SHARES    | 95   |
+
 - **Success Response:**
     - **Code:** `200 OK`
     - **Content:**
@@ -108,33 +118,33 @@ GET https://api.foresightfin.app/active-loans?memberNumber=MEM123&stationId=STN4
 - **Error Responses:**
     - **Code:** `500 Internal Server Error`
     - **Content:** No content.
-- **Example Request:**
 
-```
-GET https://api.foresightfin.app/investments?memberNumber=MEM123&stationId=STN456&investmentCode=789
-```
+- **Example Request:**
+    ```
+    GET https://api.foresightfin.app/investments?memberNumber=MEM123&stationId=STN456&investmentCode=96
+    ```
 
 - **Example Response:**
-
-```json
-[
-    {
-        "receiptDate": "2023-03-10",
-        "debit": 1500.0,
-        "credit": 700.0,
-        "runningBalance": 800.0
-    }
-]
-```
+    ```json
+    [
+        {
+            "receiptDate": "2023-03-10",
+            "debit": 1500.0,
+            "credit": 700.0,
+            "runningBalance": 800.0
+        }
+    ]
+    ```
 
 ---
 
-### **3.3 Get Loan Details**
+### 3. Get Loan Details
 
-- **Description:** Retrieve detailed information about a specific loan for a member at a station.
+Retrieve detailed information about a specific loan for a member at a station.
+
 - **URL:** `/loan-details`
 - **Method:** `GET`
-- **URL Parameters:**
+- **URL Params:**
     - `memberNumber` (string, required): The unique identifier for the member.
     - `stationId` (string, required): The identifier for the station.
     - `loanId` (integer, required): The unique identifier for the loan.
@@ -166,43 +176,43 @@ GET https://api.foresightfin.app/investments?memberNumber=MEM123&stationId=STN45
     - **Content:** No content.
     - **Code:** `500 Internal Server Error`
     - **Content:** No content.
-- **Example Request:**
 
-```
-GET https://api.foresightfin.app/loan-details?memberNumber=MEM123&stationId=STN456&loanId=101
-```
+- **Example Request:**
+    ```
+    GET https://api.foresightfin.app/loan-details?memberNumber=MEM123&stationId=STN456&loanId=101
+    ```
 
 - **Example Response:**
-
-```json
-[
-    {
-        "loanId": 101,
-        "receiptDate": "2023-01-15",
-        "transIndicator": "P",
-        "disbursedAmount": 5000.0,
-        "requestedAmount": 4500.0,
-        "paidAmount": 500.0,
-        "principalPaid": 300.0,
-        "interestPaid": 200.0,
-        "principalAmount": 4500.0,
-        "cumulativePrincipalPaid": 300.0,
-        "cumulativeInterestPaid": 200.0,
-        "outstandingPrincipal": 4200.0,
-        "outstandingInterest": 1800.0,
-        "interestAmount": 500.0
-    }
-]
-```
+    ```json
+    [
+        {
+            "loanId": 101,
+            "receiptDate": "2023-01-15",
+            "transIndicator": "P",
+            "disbursedAmount": 5000.0,
+            "requestedAmount": 4500.0,
+            "paidAmount": 500.0,
+            "principalPaid": 300.0,
+            "interestPaid": 200.0,
+            "principalAmount": 4500.0,
+            "cumulativePrincipalPaid": 300.0,
+            "cumulativeInterestPaid": 200.0,
+            "outstandingPrincipal": 4200.0,
+            "outstandingInterest": 1800.0,
+            "interestAmount": 500.0
+        }
+    ]
+    ```
 
 ---
 
-### **3.4 Get Member Profile**
+### 4. Get Member Profile
 
-- **Description:** Retrieve the profile information of a member based on their phone number.
+Retrieve the profile information of a member based on their phone number.
+
 - **URL:** `/member-profile`
 - **Method:** `GET`
-- **URL Parameters:**
+- **URL Params:**
     - `phoneNumber` (string, required): The phone number of the member in E.164 format (e.g., `+255657822049`).
 - **Success Response:**
     - **Code:** `200 OK`
@@ -223,27 +233,26 @@ GET https://api.foresightfin.app/loan-details?memberNumber=MEM123&stationId=STN4
     - **Content:** No content.
     - **Code:** `500 Internal Server Error`
     - **Content:** `null`.
-- **Example Request:**
 
-```
-GET https://api.foresightfin.app/member-profile?phoneNumber=+255657822049
-```
+- **Example Request:**
+    ```
+    GET https://api.foresightfin.app/member-profile?phoneNumber=+255657822049
+    ```
 
 - **Example Response:**
-
-```json
-{
-    "surname": "Smith",
-    "otherName": "Anna",
-    "memberNo": "MEM456",
-    "stationId": "STN789",
-    "saccoName": "Foresight SACCO"
-}
-```
+    ```json
+    {
+        "surname": "Smith",
+        "otherName": "Anna",
+        "memberNo": "MEM456",
+        "stationId": "STN789",
+        "saccoName": "Foresight SACCO"
+    }
+    ```
 
 ---
 
-## **4. Error Handling**
+## Error Handling
 
 The API uses standard HTTP status codes to indicate the success or failure of an API request:
 
@@ -256,7 +265,7 @@ The API uses standard HTTP status codes to indicate the success or failure of an
 
 ---
 
-## **5. Testing**
+## Testing
 
 For testing purposes, you can use the following phone numbers to retrieve member profiles:
 
@@ -265,7 +274,7 @@ For testing purposes, you can use the following phone numbers to retrieve member
 
 *Ensure that these phone numbers exist in the database to receive successful responses.*
 
-### **Example Test Cases**
+### Example Test Cases
 
 1. **Retrieve Active Loans**
     - **Request:**
@@ -274,19 +283,19 @@ For testing purposes, you can use the following phone numbers to retrieve member
         ```
     - **Expected Response:**
         ```json
+
+
         [101, 102, 103]
         ```
 
 2. **Retrieve Investments**
     - **Request:**
         ```
-        GET https://api.foresightfin.app/investments?memberNumber=MEM123&stationId=STN456&investmentCode=789
+        GET https://api.foresightfin.app/investments?memberNumber=MEM123&stationId=STN456&investmentCode=96
         ```
     - **Expected Response:**
         ```json
-       
-
- [
+        [
             {
                 "receiptDate": "2023-03-10",
                 "debit": 1500.0,
@@ -338,4 +347,6 @@ For testing purposes, you can use the following phone numbers to retrieve member
             "saccoName": "Foresight SACCO"
         }
         ```
+
+---
 
